@@ -1,0 +1,30 @@
+public class FullCalendarLightningComponentController {
+    @AuraEnabled
+    public static List<User_Calendar__c> getEvents() {
+        String userId = UserInfo.getUserId() ;
+        List<User_Calendar__c> userCalendar = [SELECT Id, Name, User__r.Name,
+                                               Event__c, Event__r.Name, Event__r.Start_Time__c, Event__r.End_Time__c
+                                               FROM User_Calendar__c
+                                               WHERE User__c=:userId];
+        if(userCalendar.size()>0){
+            return userCalendar;
+        } else{
+            return null;
+        }
+    }
+    
+    @AuraEnabled
+    public static List<User_Calendar__c> createOrUpdateEvent(String calendarEvent) {
+        //Geting Calendar_Event__c object from received Json String
+        Calendar_Event__c eventObject = ((Calendar_Event__c) JSON.deserialize(calendarEvent, Calendar_Event__c.class));
+        //you need to put proper regex to validate recordId
+        Boolean isOldRecord = eventObject.Id != null;
+        upsert eventObject;
+        //If its new record, create User Calendar record as well
+        if(!isOldRecord){
+            User_Calendar__c userCalendar = new User_Calendar__c(Event__c=eventObject.Id, User__c=UserInfo.getUserId());
+            insert userCalendar;
+        }
+        return getEvents();
+    }
+}
