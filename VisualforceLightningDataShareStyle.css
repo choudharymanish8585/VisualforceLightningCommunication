@@ -1,0 +1,11 @@
+.THIS {
+}
+
+.THIS .lightning-input{
+    min-width:300px;
+}
+
+.THIS .vf-card{
+    margin:20px;
+    background-color:whitesmoke;
+}
