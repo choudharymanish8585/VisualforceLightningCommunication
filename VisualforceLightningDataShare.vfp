@@ -1,0 +1,85 @@
+<apex:page lightningStylesheets="true" controller="VisualforceLightningDataShare">
+    <apex:stylesheet value="{!URLFOR($Resource.fullcalendar,'/fullcalendar/fullcalendar.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.fullcalendar,'/fullcalendar/jquery-ui.min.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.fullcalendar,'/fullcalendar/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.fullcalendar,'/fullcalendar/jquery-ui.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.fullcalendar,'/fullcalendar/moment.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.fullcalendar,'/fullcalendar/fullcalendar.min.js')}"/>
+    <apex:includeScript value="{!$Resource.VisualforceLightningDataShare}"/>
+    <html>
+        <head>
+            <style>
+            	.vf-header {
+                	    padding-left: 20px;
+                        background-color: lightgrey;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        font-weight: bold;
+                }
+                .vf-input-element {
+	                margin-left: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <apex:sectionHeader title="My Calendar" subtitle="Manage your calendar events from one place"/>
+    		<div style="width:100%">
+    			<div id='calendar' style="width:70%; padding:20px; float:left"></div>
+                <div id='updateEvent' style="width:30%; padding:20px; float:right; display:none">
+                    <div class="vf-header">Update Existing Event</div>
+                    <p><form id="updateEventForm">
+                        <table>
+                            <tr>
+                                <td>Event Title</td><td><input type="text" id="updateEventTitle" style="margin:5px"/></td>
+                            </tr>
+                            <tr>
+                                <td>Start Time</td><td><input type="text" id="updateStartTime" style="margin:5px"/></td>
+                            </tr>
+                            <tr>
+                                <td>End Time</td><td><input type="text" id="updateEndTime" style="margin:5px"/></td>
+                            </tr>
+                            <tr>
+                                <td><input type="hidden" id="recordId" name="recordId" /></td>
+                                <td><input type="submit" value="Update Event" style="margin:5px"/></td>
+                            </tr>
+                        </table>
+                    </form></p>
+                </div>
+    		</div>
+            <div id="dialog" title="Create New Event" style="display:none">
+                <form id="newEventForm">
+                    <table>
+                        <tr>
+                            <td>Event Title</td><td><input type="text" id="createEventTitle" style="margin:5px"/></td>
+                        </tr>
+                        <tr>
+                            <td>Start Time</td><td><input type="text" id="createStartTime" style="margin:5px"/></td>
+                        </tr>
+                        <tr>
+                            <td>End Time</td><td><input type="text" id="createEndTime" style="margin:5px"/></td>
+                        </tr>
+                        <tr>
+                            <td></td><td><input type="submit" value="Create Event" style="margin:5px"/></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <script>
+    			/**
+                 * Your org's my domain url
+                 * Please include port as well if any
+                 **/
+                var lightningDomain = "https://lightning-training1-dev-ed.lightning.force.com/";
+    
+                $( document ).ready(function() {
+                    //attach all necessary listener on document initialization
+                    attachListners();
+                    //Initialize calendar
+                    const calendar = CalendarSingleton.getCalendar();
+                    $( "#createStartTime,#createEndTime,#updateStartTime,#updateEndTime" ).datepicker();
+                });
+                
+            </script>
+        </body>
+    </html>
+</apex:page>
