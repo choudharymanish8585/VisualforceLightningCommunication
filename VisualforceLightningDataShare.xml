@@ -1,0 +1,25 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" 
+                controller="FullCalendarLightningComponentController">
+    
+    <aura:attribute name="visualforceDomain" type="String"
+                    default="lightning-training1-dev-ed--c.ap5.visual.force.com"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <lightning:card title="Post Message Demo">
+        <lightning:layout>
+            <lightning:layoutItem size="12">
+                <!-- The Visualforce page to send data to -->
+				<lightning:card title="" class="vf-card">
+                    <iframe aura:id="vfFrame"  frameborder="0" 
+                            width="100%" height="800" 
+                            src="{!'https://' + v.visualforceDomain + 
+                                 '/apex/VisualforceLightningDataShare'}"
+                            onload="{!c.onVFLoad}"/>
+                </lightning:card>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card>
+    
+    
+</aura:component>
